@@ -1,0 +1,195 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// ──────────────────────────────────────────────────────────────
+// GENERATOR: Tells Prisma what code to generate.
+// "prisma-client-js" generates the @prisma/client library
+// with TypeScript types for every model defined below.
+// After running `npx prisma generate`, you can import
+// PrismaClient and get full autocomplete for all queries.
+// ──────────────────────────────────────────────────────────────
+generator client {
+  provider = "prisma-client-js"
+}
+
+// ──────────────────────────────────────────────────────────────
+// DATASOURCE: Configures which database engine Prisma uses.
+// - provider: "postgresql" tells Prisma we're using PostgreSQL.
+// - In Prisma 7, connection URLs moved to prisma.config.ts
+//   (no longer allowed here). This keeps the schema clean
+//   and focused on model definitions.
+// ──────────────────────────────────────────────────────────────
+datasource db {
+  provider = "postgresql"
+}
+
+// ──────────────────────────────────────────────────────────────
+// ENUM: CandidateStatus
+// ──────────────────────────────────────────────────────────────
+// An enum is a set of named constants. Instead of storing status
+// as a plain string (where typos like "Aplied" could slip in),
+// an enum enforces that the value MUST be one of these five.
+// This constraint is enforced at the DATABASE level — even raw
+// SQL queries can't insert an invalid status.
+//
+// Pipeline flow:
+//   APPLIED → SCREENING → INTERVIEW → SELECTED
+//                                    → REJECTED
+// ──────────────────────────────────────────────────────────────
+enum CandidateStatus {
+  APPLIED
+  SCREENING
+  INTERVIEW
+  SELECTED
+  REJECTED
+}
+
+// ──────────────────────────────────────────────────────────────
+// MODEL: User
+// ──────────────────────────────────────────────────────────────
+// Represents a recruiter who uses the system.
+// This is the "parent" entity — candidates and interviews
+// belong to a user. This enables multi-tenancy: each recruiter
+// only sees their own data.
+//
+// Relations:
+//   User → Candidate  (one-to-many: a user creates many candidates)
+//   User → Interview   (one-to-many: a user schedules many interviews)
+// ──────────────────────────────────────────────────────────────
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String   // Stored as bcrypt hash, never plain text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // ── Relations ──
+  candidates Candidate[]
+  interviews Interview[]
+}
+
+// ──────────────────────────────────────────────────────────────
+// MODEL: Candidate
+// ──────────────────────────────────────────────────────────────
+// Represents a job applicant being tracked through the pipeline.
+//
+// Relations:
+//   Candidate → User       (many-to-one: belongs to the recruiter who created it)
+//   Candidate → Interview  (one-to-many: can have multiple interviews)
+//
+// Design decisions:
+//   - `phone` is optional (String?) because not all candidates provide one.
+//   - `skills` is a comma-separated String for MVP simplicity.
+//     In production, you might use a separate Skill table with many-to-many.
+//   - `resumeUrl` and `linkedinUrl` are optional external links.
+//   - `status` defaults to APPLIED — every new candidate starts here.
+//   - `@@index([userId])` speeds up the query "get all candidates for this user".
+//   - `@@index([status])` speeds up filtering by pipeline status.
+// ──────────────────────────────────────────────────────────────
+model Candidate {
+  id          String          @id @default(cuid())
+  name        String
+  email       String
+  phone       String?
+  experience  Int             @default(0)
+  skills      String          @default("")
+  resumeUrl   String?
+  linkedinUrl String?
+  status      CandidateStatus @default(APPLIED)
+
+  // ── Foreign Key: links to the recruiter who created this candidate ──
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // ── Relations ──
+  interviews Interview[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // ── Indexes for common query patterns ──
+  @@index([userId])
+  @@index([status])
+}
+
+// ──────────────────────────────────────────────────────────────
+// MODEL: Interview
+// ──────────────────────────────────────────────────────────────
+// Represents a scheduled interview for a candidate.
+//
+// Relations:
+//   Interview → Candidate  (many-to-one: belongs to a candidate)
+//   Interview → User       (many-to-one: scheduled by a recruiter)
+//   Interview → Scorecard  (one-to-one: has at most one scorecard)
+//
+// Design decisions:
+//   - `scheduledAt` is a single DateTime (includes both date and time).
+//   - `interviewer` is a plain String (name of the person conducting it),
+//     not a foreign key to User. In our MVP, the interviewer might be
+//     someone outside the system.
+//   - `meetingLink` is optional (nullable) — not all interviews are virtual.
+//   - `@@index([scheduledAt])` enables efficient "upcoming interviews" queries.
+// ──────────────────────────────────────────────────────────────
+model Interview {
+  id          String   @id @default(cuid())
+  scheduledAt DateTime
+  interviewer String
+  meetingLink String?
+
+  // ── Foreign Key: which candidate this interview is for ──
+  candidateId String
+  candidate   Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+
+  // ── Foreign Key: which recruiter scheduled this interview ──
+  userId String
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // ── Relation: optional scorecard (filled after the interview) ──
+  scorecard Scorecard?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // ── Indexes for common query patterns ──
+  @@index([candidateId])
+  @@index([userId])
+  @@index([scheduledAt])
+}
+
+// ──────────────────────────────────────────────────────────────
+// MODEL: Scorecard
+// ──────────────────────────────────────────────────────────────
+// Represents the evaluation filled out after an interview.
+//
+// Relation:
+//   Scorecard → Interview  (one-to-one: each interview has exactly one scorecard)
+//
+// The `@unique` on `interviewId` enforces the one-to-one constraint
+// at the database level — you cannot create two scorecards for the
+// same interview.
+//
+// Design decisions:
+//   - Ratings are Int (1-5). Validation of the range (1-5) is done
+//     at the application level with Zod, not at the database level.
+//   - `comments` is optional — the recruiter may just give ratings
+//     without written feedback.
+//   - `onDelete: Cascade` means deleting an interview automatically
+//     deletes its scorecard.
+// ──────────────────────────────────────────────────────────────
+model Scorecard {
+  id                   String @id @default(cuid())
+  technicalRating      Int
+  communicationRating  Int
+  problemSolvingRating Int
+  comments             String?
+
+  // ── Foreign Key: which interview this scorecard belongs to ──
+  // @unique makes this a one-to-one relation (not one-to-many)
+  interviewId String    @unique
+  interview   Interview @relation(fields: [interviewId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
