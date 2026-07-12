@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { CandidateStatus } from "@prisma/client";
 
 // ──────────────────────────────────────────────────────────────
 // Zod Schema for Candidate Form Inputs
@@ -23,7 +22,7 @@ export const candidateSchema = z.object({
     .url("Invalid URL format for LinkedIn")
     .optional()
     .or(z.literal("")),
-  status: z.nativeEnum(CandidateStatus).default(CandidateStatus.APPLIED),
+  status: z.enum(["APPLIED", "SCREENING", "INTERVIEW", "SELECTED", "REJECTED"]).default("APPLIED"),
 });
 
 export type CandidateInput = z.infer<typeof candidateSchema>;
