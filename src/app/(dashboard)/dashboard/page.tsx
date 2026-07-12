@@ -1,6 +1,12 @@
 import React from "react";
 import Link from "next/link";
+import type { Metadata } from "next";
 import { auth } from "@/lib/auth";
+
+export const metadata: Metadata = {
+  title: "Recruiter Dashboard",
+  description: "Recruiter pipeline overview and recent candidate metrics on HireTrack.",
+};
 import { prisma } from "@/lib/prisma";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import {

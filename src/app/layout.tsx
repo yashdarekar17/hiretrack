@@ -15,8 +15,39 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "HireTrack - Applicant Tracking System",
-  description: "Modern applicant tracking system for recruiters",
+  title: {
+    default: "HireTrack - Applicant Tracking System",
+    template: "%s | HireTrack"
+  },
+  description: "Accelerate your recruitment workflow with HireTrack, a production-quality, responsive applicant tracking system built for modern teams.",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
+  icons: {
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
+  },
+  openGraph: {
+    title: "HireTrack - Modern Recruitment Platform",
+    description: "Manage candidates, schedule evaluations, and analyze pipelines instantly.",
+    url: "/",
+    siteName: "HireTrack",
+    images: [
+      {
+        url: "/logo.png",
+        width: 800,
+        height: 800,
+        alt: "HireTrack SaaS Platform Logo",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "HireTrack - Applicant Tracking System",
+    description: "Accelerate your recruitment workflow with HireTrack.",
+    images: ["/logo.png"],
+  },
 };
 
 export default function RootLayout({

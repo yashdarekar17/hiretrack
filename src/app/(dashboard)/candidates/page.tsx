@@ -1,5 +1,11 @@
 import React from "react";
 import Link from "next/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Candidates Directory",
+  description: "Browse, filter, and manage applicant pipeline profiles on HireTrack.",
+};
 import { Plus, Users, Eye, Edit, FileText } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import {

@@ -1,4 +1,10 @@
 import React from "react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Recruitment Analytics Insights",
+  description: "Gain dynamic data insights on application flows, monthly hire timelines, and candidate conversion rates.",
+};
 import { getCandidatesStatusData, getInterviewsThisMonthData } from "@/server/queries/analytics";
 import { AnalyticsCharts } from "@/components/analytics/analytics-charts";
 

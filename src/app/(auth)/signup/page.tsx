@@ -1,4 +1,10 @@
 import React from "react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Recruiter Registration",
+  description: "Create a recruiter account on HireTrack to organize and optimize candidate workflows.",
+};
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { SignupForm } from "@/components/auth/signup-form";

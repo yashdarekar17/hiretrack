@@ -1,4 +1,10 @@
 import React from "react";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Add New Candidate",
+  description: "Input details, skills, and profile urls to create a new candidate entry on HireTrack.",
+};
 import { CandidateForm } from "@/components/candidates/candidate-form";
 import { createCandidate } from "@/server/actions/candidate";
 
