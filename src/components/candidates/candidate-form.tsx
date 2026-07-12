@@ -4,7 +4,7 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CandidateStatus, Candidate } from "@prisma/client";
+import type { CandidateStatus, Candidate } from "@prisma/client";
 import { toast } from "sonner";
 import { Loader2, Save, ArrowLeft } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -63,7 +63,7 @@ export function CandidateForm({
       skills: initialData?.skills || "",
       resumeUrl: initialData?.resumeUrl || "",
       linkedinUrl: initialData?.linkedinUrl || "",
-      status: initialData?.status || CandidateStatus.APPLIED,
+      status: initialData?.status || ("APPLIED" as CandidateStatus),
     },
   });
 
@@ -186,11 +186,11 @@ export function CandidateForm({
                 <SelectValue placeholder="Select stage" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value={CandidateStatus.APPLIED}>Applied</SelectItem>
-                <SelectItem value={CandidateStatus.SCREENING}>Screening</SelectItem>
-                <SelectItem value={CandidateStatus.INTERVIEW}>Interview</SelectItem>
-                <SelectItem value={CandidateStatus.SELECTED}>Selected</SelectItem>
-                <SelectItem value={CandidateStatus.REJECTED}>Rejected</SelectItem>
+                <SelectItem value="APPLIED">Applied</SelectItem>
+                <SelectItem value="SCREENING">Screening</SelectItem>
+                <SelectItem value="INTERVIEW">Interview</SelectItem>
+                <SelectItem value="SELECTED">Selected</SelectItem>
+                <SelectItem value="REJECTED">Rejected</SelectItem>
               </SelectContent>
             </Select>
             {errors.status && (

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Scorecard } from "@prisma/client";
+import type { Scorecard } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";

@@ -25,3 +25,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Corrected unmounted option bugs in `<SelectValue>` to display candidate names instead of raw database CUIDs in select boxes.
 - Fixed a Tailwind CSS compilation bug by mapping the `--font-sans` variable to Geist Sans, eliminating browser Times New Roman typography.
 - Resolved next-auth ClientFetchErrors by transitioning logout mechanisms to Next.js Server Actions.
+- Resolved Vercel deployment module-not-found errors by converting `@prisma/client` imports in client components (`status-updater.tsx`, `candidate-form.tsx`, `scorecard-dialog.tsx`) to type-only imports (`import type`) and utilizing string literals instead of runtime enum values, completely stripping Prisma's server runtime from client bundles.

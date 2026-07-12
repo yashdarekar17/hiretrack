@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
-import { CandidateStatus } from "@prisma/client";
+import type { CandidateStatus } from "@prisma/client";
 import { toast } from "sonner";
 import { Loader2, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -14,11 +14,11 @@ interface StatusUpdaterProps {
 }
 
 const stagesList = [
-  { status: CandidateStatus.APPLIED, label: "Applied" },
-  { status: CandidateStatus.SCREENING, label: "Screening" },
-  { status: CandidateStatus.INTERVIEW, label: "Interview" },
-  { status: CandidateStatus.SELECTED, label: "Selected" },
-  { status: CandidateStatus.REJECTED, label: "Rejected" },
+  { status: "APPLIED" as CandidateStatus, label: "Applied" },
+  { status: "SCREENING" as CandidateStatus, label: "Screening" },
+  { status: "INTERVIEW" as CandidateStatus, label: "Interview" },
+  { status: "SELECTED" as CandidateStatus, label: "Selected" },
+  { status: "REJECTED" as CandidateStatus, label: "Rejected" },
 ];
 
 // Helper to get status colors
@@ -26,13 +26,13 @@ const getStatusColors = (status: CandidateStatus, isActive: boolean) => {
   if (!isActive) return "bg-neutral-100 hover:bg-neutral-200 text-neutral-600 border-neutral-200 dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:text-neutral-400 dark:border-neutral-800";
   
   switch (status) {
-    case CandidateStatus.SELECTED:
+    case "SELECTED":
       return "bg-emerald-600 text-white border-emerald-600 dark:bg-emerald-700 dark:border-emerald-700 hover:bg-emerald-700";
-    case CandidateStatus.REJECTED:
+    case "REJECTED":
       return "bg-rose-600 text-white border-rose-600 dark:bg-rose-700 dark:border-rose-700 hover:bg-rose-700";
-    case CandidateStatus.INTERVIEW:
+    case "INTERVIEW":
       return "bg-indigo-600 text-white border-indigo-600 dark:bg-indigo-700 dark:border-indigo-700 hover:bg-indigo-700";
-    case CandidateStatus.SCREENING:
+    case "SCREENING":
       return "bg-amber-600 text-white border-amber-600 dark:bg-amber-700 dark:border-amber-700 hover:bg-amber-700";
     default:
       return "bg-sky-600 text-white border-sky-600 dark:bg-sky-700 dark:border-sky-700 hover:bg-sky-700";
