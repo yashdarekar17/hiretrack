@@ -4,7 +4,7 @@ import React, { useActionState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { Briefcase, Loader2, ArrowRight } from "lucide-react";
+import { BriefcaseBusiness, Loader2, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -25,7 +25,7 @@ const initialState: AuthActionState = {
 // ──────────────────────────────────────────────────────────────
 export function SignupForm() {
   const router = useRouter();
-  
+
   // Hook up signUp Server Action
   const [state, formAction, isPending] = useActionState(signUp, initialState);
 
@@ -45,7 +45,7 @@ export function SignupForm() {
       <CardHeader className="space-y-2 pb-6 text-center border-b border-border/30">
         <div className="flex justify-center mb-2">
           <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-primary text-primary-foreground shadow-md">
-            <Briefcase className="w-5 h-5 animate-pulse" />
+            <BriefcaseBusiness className="w-5 h-5 animate-pulse" />
           </div>
         </div>
         <CardTitle className="text-2xl font-bold tracking-tight text-foreground">

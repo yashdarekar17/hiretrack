@@ -10,7 +10,7 @@ import {
   BarChart3,
   Settings,
   LogOut,
-  Briefcase,
+  BriefcaseBusiness,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -70,7 +70,7 @@ export function Sidebar({ className }: { className?: string }) {
       {/* ── Logo Section ── */}
       <div className="flex items-center gap-3 px-6 h-16 border-b border-sidebar-border">
         <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-primary text-primary-foreground">
-          <Briefcase className="w-5 h-5" />
+          <BriefcaseBusiness className="w-5 h-5" />
         </div>
         <span className="font-bold text-lg tracking-tight">HireTrack</span>
       </div>

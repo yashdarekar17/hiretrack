@@ -6,7 +6,7 @@ import {
   Edit,
   Mail,
   Phone,
-  Briefcase,
+  BriefcaseBusiness,
   ExternalLink,
   Linkedin,
   FileText,
@@ -156,7 +156,7 @@ export default async function CandidateDetailPage({ params }: CandidateDetailPag
               {/* Experience */}
               <div className="flex items-start gap-3">
                 <div className="p-2.5 bg-primary/10 text-primary rounded-xl shrink-0">
-                  <Briefcase className="w-4.5 h-4.5" />
+                  <BriefcaseBusiness className="w-4.5 h-4.5" />
                 </div>
                 <div>
                   <span className="text-xs text-muted-foreground block font-medium">Experience</span>
