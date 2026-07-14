@@ -193,3 +193,20 @@ model Scorecard {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+// ──────────────────────────────────────────────────────────────
+// MODEL: RateLimit
+// ──────────────────────────────────────────────────────────────
+// Used to prevent brute-force attacks and rate limit sensitive actions.
+// Tracks points (attempts) per key (e.g. action + IP or action + email)
+// and handles window expiration.
+// ──────────────────────────────────────────────────────────────
+model RateLimit {
+  key       String   @id
+  points    Int      @default(0)
+  expireAt  DateTime
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+

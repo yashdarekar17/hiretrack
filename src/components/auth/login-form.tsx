@@ -4,7 +4,7 @@ import React, { useActionState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { BriefcaseBusiness, Loader2, ArrowRight } from "lucide-react";
+import { BriefcaseBusiness, Loader2, ArrowRight, AlertCircle, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -25,6 +25,7 @@ const initialState: AuthActionState = {
 // ──────────────────────────────────────────────────────────────
 export function LoginForm() {
   const router = useRouter();
+  const [showPassword, setShowPassword] = React.useState(false);
 
   // Hook up signInCredentials Server Action
   const [state, formAction, isPending] = useActionState(signInCredentials, initialState);
@@ -57,7 +58,7 @@ export function LoginForm() {
       </CardHeader>
 
       <form action={formAction}>
-        <CardContent className="space-y-4 pt-6">
+        <CardContent className="space-y-5 pt-6">
           {/* ── Email Input ── */}
           <div className="space-y-2">
             <Label htmlFor="email">Email Address</Label>
@@ -73,18 +74,51 @@ export function LoginForm() {
           </div>
 
           {/* ── Password Input ── */}
-          <div className="space-y-2">
+          <div className="space-y-3 pb-4">
             <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              name="password"
-              type="password"
-              placeholder="••••••••"
-              required
-              disabled={isPending}
-              className="rounded-xl h-10 px-3.5 border-border/80 focus:border-primary transition-colors"
-            />
+            <div className="relative">
+              <Input
+                id="password"
+                name="password"
+                type={showPassword ? "text" : "password"}
+                placeholder="••••••••"
+                required
+                disabled={isPending}
+                className="rounded-xl h-10 pl-3.5 pr-10 border-border/80 focus:border-primary transition-colors w-full"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground focus:outline-hidden transition-colors"
+              >
+                {showPassword ? (
+                  <EyeOff className="w-4 h-4" />
+                ) : (
+                  <Eye className="w-4 h-4" />
+                )}
+                <span className="sr-only">Toggle password visibility</span>
+              </button>
+            </div>
           </div>
+
+          {/* ── Rate Limit / Attempt Warnings ── */}
+          {state && state.attemptsRemaining !== undefined && state.attemptsRemaining > 0 && state.attemptsRemaining < 5 && (
+            <div className="flex items-center gap-2 p-3.5 text-xs bg-amber-50 dark:bg-amber-950/20 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-900/50 rounded-xl animate-in fade-in duration-300">
+              <AlertCircle className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
+              <span>
+                Warning: <strong>{5 - state.attemptsRemaining}/5 attempts</strong> used. Your account will be locked for 15 minutes after 5 failed attempts.
+              </span>
+            </div>
+          )}
+
+          {state && state.isBlocked && (
+            <div className="flex items-center gap-2 p-3.5 text-xs bg-rose-50 dark:bg-rose-950/20 text-rose-800 dark:text-rose-300 border border-rose-200 dark:border-rose-900/50 rounded-xl animate-in fade-in duration-300">
+              <AlertCircle className="w-4 h-4 text-rose-600 dark:text-rose-400 shrink-0" />
+              <span>
+                <strong>Account is blocked for 15 minutes.</strong> Please try again after 15 minutes.
+              </span>
+            </div>
+          )}
         </CardContent>
 
         <CardFooter className="flex flex-col gap-4 pb-6 pt-2">

@@ -4,7 +4,7 @@ import React, { useActionState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { BriefcaseBusiness, Loader2, ArrowRight } from "lucide-react";
+import { BriefcaseBusiness, Loader2, ArrowRight, Eye, EyeOff } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -25,6 +25,7 @@ const initialState: AuthActionState = {
 // ──────────────────────────────────────────────────────────────
 export function SignupForm() {
   const router = useRouter();
+  const [showPassword, setShowPassword] = React.useState(false);
 
   // Hook up signUp Server Action
   const [state, formAction, isPending] = useActionState(signUp, initialState);
@@ -87,18 +88,32 @@ export function SignupForm() {
           </div>
 
           {/* ── Password Input ── */}
-          <div className="space-y-2">
+          <div className="space-y-2 pb-4">
             <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
-              name="password"
-              type="password"
-              placeholder="••••••••"
-              required
-              disabled={isPending}
-              className="rounded-xl h-10 px-3.5 border-border/80 focus:border-primary transition-colors"
-            />
-            <p className="text-[0.7rem] text-muted-foreground">
+            <div className="relative">
+              <Input
+                id="password"
+                name="password"
+                type={showPassword ? "text" : "password"}
+                placeholder="••••••••"
+                required
+                disabled={isPending}
+                className="rounded-xl h-10 pl-3.5 pr-10 border-border/80 focus:border-primary transition-colors w-full"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground focus:outline-hidden transition-colors"
+              >
+                {showPassword ? (
+                  <EyeOff className="w-4 h-4" />
+                ) : (
+                  <Eye className="w-4 h-4" />
+                )}
+                <span className="sr-only">Toggle password visibility</span>
+              </button>
+            </div>
+            <p className="text-[0.7rem] text-muted-foreground mt-1">
               Must be at least 6 characters.
             </p>
           </div>
