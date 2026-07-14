@@ -3,7 +3,7 @@
 
 ![Hero Screenshot](https://raw.githubusercontent.com/your-username/hiretrack/main/docs/screenshots/hero.png)
 
-[![CI](https://github.com/your-username/hiretrack/actions/workflows/ci.yml/badge.svg)](https://github.com/your-username/hiretrack/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) **Live demo → https://hiretrack.vercel.app**
+[![CI](https://github.com/your-username/hiretrack/actions/workflows/ci.yml/badge.svg)](https://github.com/your-username/hiretrack/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) **Live demo → https://hiretrack-psi-three.vercel.app**
 
 ## Features
 - **Recruiter Authentication:** Secure signup and login powered by Auth.js v5 and hashed credentials using bcrypt (cost factor 12).
@@ -77,8 +77,20 @@ npm run test
 - [ ] Export Candidates to CSV/PDF
 
 ## Screenshots
-A preview grid showing the HireTrack recruitment dashboard interface.
-*(Check screenshots folder under docs/screenshots/)*
+Screenshots of the project's interfaces and workflows are available in the [public/screenshots](public/screenshots) folder.
+
+These include:
+- `login.png` — Recruiter Sign-In Form with password visibility toggle and warning banners.
+- `dashboard.png` — Recruiter Pipeline Overview and statistics (Dark Mode).
+- `dashboard-light.png` — Recruiter Pipeline Overview and statistics (Light Mode).
+- `candidates.png` — Candidates Pipeline stage-tracking grid.
+- `candidate-new.png` — Add Candidate form view.
+- `interviews.png` — Upcoming Interviews list.
+- `interviews-past.png` — Completed evaluations scorecard history.
+- `schedule-interview.png` — Interview scheduling modal dialog.
+- `evaluation-scorecard.png` — Star rating scoring and recruiter feedback panel.
+- `analytics.png` — Funnel volume distribution and monthly workloads.
+- `settings.png` — Recruiter Profile and Account Preferences.
 
 ## License
 MIT — see [LICENSE](LICENSE) details.

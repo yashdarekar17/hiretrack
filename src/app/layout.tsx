@@ -22,9 +22,9 @@ export const metadata: Metadata = {
   description: "Accelerate your recruitment workflow with HireTrack, a production-quality, responsive applicant tracking system built for modern teams.",
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"),
   icons: {
-    icon: "/logo.png",
-    shortcut: "/logo.png",
-    apple: "/logo.png",
+    icon: "/logo.svg",
+    shortcut: "/logo.svg",
+    apple: "/logo.svg",
   },
   openGraph: {
     title: "HireTrack - Modern Recruitment Platform",
