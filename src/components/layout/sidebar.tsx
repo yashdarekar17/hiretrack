@@ -53,10 +53,11 @@ const navigationLinks = [
 // Highlights the active link based on the current URL pathname.
 // Includes a sign-out button at the bottom.
 // ──────────────────────────────────────────────────────────────
-export function Sidebar({ className }: { className?: string }) {
+export function Sidebar({ className, onClose }: { className?: string; onClose?: () => void }) {
   const pathname = usePathname();
 
   const handleLogout = async () => {
+    onClose?.();
     await logout();
   };
 
@@ -85,6 +86,7 @@ export function Sidebar({ className }: { className?: string }) {
             <Link
               key={link.name}
               href={link.href}
+              onClick={onClose}
               className={cn(
                 "flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 group relative",
                 isActive

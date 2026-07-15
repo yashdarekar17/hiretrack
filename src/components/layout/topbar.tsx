@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { logout } from "@/server/actions/auth";
 import { Menu, LogOut, Settings } from "lucide-react";
@@ -81,7 +82,7 @@ export function Topbar({ user }: TopbarProps) {
           </SheetTrigger>
           <SheetContent side="left" className="p-0 w-64 border-r-0">
             <SheetTitle className="sr-only">Mobile Navigation Menu</SheetTitle>
-            <Sidebar />
+            <Sidebar onClose={() => setIsOpen(false)} />
           </SheetContent>
         </Sheet>
 
@@ -121,10 +122,10 @@ export function Topbar({ user }: TopbarProps) {
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuItem className="p-0">
-              <a href="/settings" className="flex items-center gap-2 cursor-pointer w-full px-3 py-2 text-sm">
+              <Link href="/settings" className="flex items-center gap-2 cursor-pointer w-full px-3 py-2 text-sm">
                 <Settings className="w-4 h-4 text-muted-foreground" />
                 <span>Settings</span>
-              </a>
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem

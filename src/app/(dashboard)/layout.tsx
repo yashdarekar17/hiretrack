@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { Sidebar } from "@/components/layout/sidebar";
 import { Topbar } from "@/components/layout/topbar";
+import { Footer } from "@/components/layout/footer";
 
 // ──────────────────────────────────────────────────────────────
 // Dashboard Layout (App Router)
@@ -37,10 +38,11 @@ export default async function DashboardLayout({
         <Topbar user={session.user} />
 
         {/* ── Page Content Container ── */}
-        <main className="flex-1 overflow-y-auto bg-neutral-50/50 dark:bg-background/20 p-6 md:p-8">
-          <div className="max-w-7xl mx-auto space-y-6">
+        <main className="flex-1 overflow-y-auto bg-neutral-50/50 dark:bg-background/20 p-6 md:p-8 flex flex-col">
+          <div className="max-w-7xl mx-auto space-y-6 w-full flex-1">
             {children}
           </div>
+          <Footer />
         </main>
       </div>
     </div>
