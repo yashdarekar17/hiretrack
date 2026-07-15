@@ -3,7 +3,10 @@
 
 ![Hero Screenshot](https://raw.githubusercontent.com/your-username/hiretrack/main/docs/screenshots/hero.png)
 
-[![CI](https://github.com/your-username/hiretrack/actions/workflows/ci.yml/badge.svg)](https://github.com/your-username/hiretrack/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE) **Live demo → https://hiretrack-psi-three.vercel.app**
+[![CI](https://github.com/your-username/hiretrack/actions/workflows/ci.yml/badge.svg)](https://github.com/your-username/hiretrack/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
+* **Live demo:** [https://hiretrack-psi-three.vercel.app](https://hiretrack-psi-three.vercel.app)
+* **Video Walkthrough:** [Watch on Loom](https://www.loom.com/share/5c5a1eea38bc452f9e44618c6d1b8398)
 
 ## Features
 - **Recruiter Authentication:** Secure signup and login powered by Auth.js v5 and hashed credentials using bcrypt (cost factor 12).
