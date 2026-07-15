@@ -1,50 +1,47 @@
-# Case Study: HireTrack Modern Recruiter Pipeline
+# Case Study: HireTrack - Unified Recruiter Pipeline
 
-A short write-up detailing the problem, our technical approach, the results, and key learnings from developing and polishing the HireTrack Applicant Tracking System (ATS).
-
----
-
-## 1. The Problem
-Recruitment teams need a fast, intuitive interface to register candidates, move them through hiring stages, schedule interviews, and evaluate performance via star-rated scorecards. 
-
-During user testing, two major layout issues were identified on mobile viewports:
-1. **Sticky Hamburger Navbar**: When clicking navigation links inside the mobile hamburger sidebar, the page navigated successfully but the overlay menu remained open. Users had to manually tap the backdrop to close it.
-2. **Theme Legibility Issues**: The customized branding footer logo text was rendered in white, making it completely invisible when the application was in Light Theme mode.
-3. **Sluggish Mobile Feedback**: Slow data queries during page transitions on mobile left the user in a state of uncertainty, requiring a clear, instant visual transition behavior.
+A detailed write-up of the problem statement, solution design, technical schema challenge, open-source setup, and the branding context of the HireTrack project.
 
 ---
 
-## 2. The Approach
+## 1. The Problem Statement
 
-### Instant Navigation Close & Viewport Transition
-Rather than listening to delayed page load events, we modified the `Sidebar` and `Topbar` relationship:
-- Introduced an optional `onClose` callback hook to the `Sidebar` component.
-- Implemented `onClick` intercepts on all `<Link>` components in the navigation menu.
-- Passed `onClose={() => setIsOpen(false)}` from the mobile `Sheet` container in `Topbar`.
-- Now, clicking a link instantly closes the sheet overlay, revealing the main layout which automatically displays the native Next.js `loading.tsx` skeleton loader during transition.
-
-### Cross-Theme Branding Filter
-To resolve the light mode logo visibility issue without introducing duplicate image assets or complex JS theme hooks:
-- Standardized on a single, high-quality transparent asset `/digital.png`.
-- Applied Tailwind CSS filters: `invert dark:invert-0`.
-- In **Light Mode**, the white text in `/digital.png` is inverted to solid black (perfect contrast against white backgrounds).
-- In **Dark Mode**, the inversion is bypassed (`dark:invert-0`), preserving the original white color.
-
-### Clean Footer Layout Architecture
-- Wrapped the main page content inside a CSS flex container (`flex flex-col min-h-screen`).
-- Set the main wrapper to `flex-1` and the footer to `mt-auto`.
-- This ensures the footer rests perfectly at the bottom of short pages, but flows naturally underneath on scrollable pages.
+Recruitment teams managing hiring funnels at scale face significant operational hurdles:
+*   **High Candidate Volume**: Manually tracking details, resumes, skills, and progress stages (Applied, Screening, Interview, Selected, Rejected) for hundreds of applicants becomes disorganized.
+*   **Interview Scheduling & Meeting Invites**: Coordinating interviews and manually generating, linking, and managing virtual meeting invites for different candidates is disjointed.
+*   **Pipeline Analytics**: Manually calculating and tracking recruitment statistics—how many candidates are selected, rejected, or currently being interviewed—is difficult to aggregate and visualize.
 
 ---
 
-## 3. The Result
-- **Seamless Mobile UX**: Tapping sidebar links on mobile now closes the sidebar overlay instantly and provides immediate visual feedback.
-- **Flawless Contrast**: The "Made for digital.heroes" footer renders in a crisp, readable brand green (`text-emerald-600 dark:text-emerald-400`) and the logo adapts perfectly across both theme modes.
-- **Production Grade Quality**: Run linter and build check validations are clean with `0 errors` and fully optimized static page generation.
+## 2. The Solution
+
+We created **HireTrack**—a unified, single-interface web platform that consolidates all of these recruiter workflows into one application:
+*   **Central Pipeline (CRUD)**: Recruiters can add, view, update, and progress candidates through stages in a structured pipeline.
+*   **Scheduler & Meeting Invites**: Recruiters can coordinate interview times, assign interviewers, and attach virtual meeting links directly to candidates' interview schedules.
+*   **Dashboard Analytics**: An analytics suite that automatically displays statistics, allowing recruiters to instantly see how many candidates are selected, rejected, and interviewed.
 
 ---
 
-## 4. What We Learned
-- **Next.js Route Interception**: Leveraging React's concurrent navigation by coupling click intercepts with standard page suspense boundaries is much faster and cleaner than managing global router loading state hooks.
-- **CSS-Only Theme Adaptability**: Simple filters like `invert` are incredibly powerful for adjusting transparent branding logos across light/dark modes without generating additional network payload.
-- **Flexbox Positioning**: Sticking layout footers cleanly to the bottom using `mt-auto` and `flex-col` keeps layouts extremely stable, preventing jumps on dynamic page hydration.
+## 3. Key Technical Challenges & Learnings
+
+### Designing the Prisma Schema
+The primary difficulty in setting up the database layer was designing a robust, relational schema using Prisma that connects all recruitment entities correctly:
+*   **Entity Relationships**: Mapping the connection between recruiters (`User`), applicants (`Candidate`), scheduled sessions (`Interview`), and feedback ratings (`Scorecard`) while enforcing correct constraints (such as a 1-to-many relationship for candidates, and a strict 1-to-1 relationship between an interview and its scorecard).
+*   **Database Constraints**: Ensuring type-safety by using schema Enums (`CandidateStatus`) for pipeline stages, and creating indexes on commonly queried fields (like candidate status and user ID) to maintain high-performance search and statistics filtering as candidate volumes scale.
+
+### Adding a License
+To open-source the project, we added the **MIT License** by creating a root `LICENSE` file. This permissive license protects authors from liability and legally grants open-source contributors the right to run, modify, and distribute the software.
+
+### Open-Sourcing the Repository
+To ready the project for public contribution:
+*   We published the repository as **Public** on GitHub.
+*   We created a `CONTRIBUTING.md` defining branch naming patterns (e.g. `feat/`, `fix/`) and verification checks (linting, building, type checking) to ensure high code quality.
+*   We structured the codebase documentation to allow easy onboarding for external developers.
+
+---
+
+## 4. Why We Added the Footer
+
+We integrated the custom branding footer containing `"Made for digital.heroes"` to support the project's real-world context:
+*   **Mentorship Context**: **digital.heroes** is a coding and digital integration academy where industry mentors guide junior developers in building software. The footer was added to explicitly credit the mentors and developers who built the application.
+*   **Theme Visibility**: To make the transparent logo readable on both light and dark backgrounds, we used CSS filters (`invert dark:invert-0`). This automatically adjusts the text contrast depending on the active theme mode without duplicating image assets.
